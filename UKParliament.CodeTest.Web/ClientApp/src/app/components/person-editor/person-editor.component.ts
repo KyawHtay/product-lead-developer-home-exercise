@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { PersonViewModel } from '../../models/person-view-model';
 import { PersonService } from '../../services/person.service';
 import { DepartmentService } from '../../services/department.service';
-import { PersonViewModel } from '../../models/person-view-model';
 import { DepartmentVewModel } from '../../models/department-view-model';
 
 @Component({
@@ -11,47 +11,45 @@ import { DepartmentVewModel } from '../../models/department-view-model';
   styleUrls: ['./person-editor.component.scss']
 })
 export class PersonEditorComponent implements OnInit {
-  person: PersonViewModel = {
+  @Input() person: PersonViewModel = {
     id: 0,
     firstName: '',
     lastName: '',
-    email: '',
     dateOfBirth: '',
+    email: '',
     departmentId: 0,
     department: undefined
-  };
-  departments: DepartmentVewModel[] = [];
+  }; // Person to edit
+
+  @Output() close = new EventEmitter<void>(); // Emit event to close editor
+
+  departments: DepartmentVewModel[] = []; // ✅ Store department list
+  today: string = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
   constructor(
     private personService: PersonService,
-    private departmentService: DepartmentService,
-    private route: ActivatedRoute,
-    private router: Router
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
     this.loadDepartments();
-
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.personService.getById(id).subscribe(person => this.person = person);
-    }
   }
 
   loadDepartments(): void {
     this.departmentService.getDepartments().subscribe(depts => this.departments = depts);
   }
 
-  savePerson(): void {
-    console.log(this.person);
+  savePerson(form: NgForm): void {
+    if (!form.valid) return; // Prevent submission if form is invalid
+
     if (this.person.id) {
-      this.personService.update(this.person).subscribe(() => this.router.navigate(['/persons']));
+      this.personService.update(this.person).subscribe(() => this.close.emit());
     } else {
-      this.personService.create(this.person).subscribe(() => this.router.navigate(['/persons']));
+      this.personService.create(this.person).subscribe(() => this.close.emit());
     }
   }
 
   cancel(): void {
-    this.router.navigate(['/persons']);
+    this.close.emit();
   }
 }

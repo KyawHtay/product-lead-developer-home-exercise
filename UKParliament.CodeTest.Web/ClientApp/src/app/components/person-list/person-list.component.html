@@ -1,27 +1,35 @@
-<div class="container">
-  <h2>Person List</h2>
-  <button (click)="addPerson()" class="btn btn-primary">Add New Person</button>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Department</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let person of people">
-        <td>{{ person.firstName }}</td>
-        <td>{{ person.lastName }}</td>
-        <td>{{ person.email }}</td>
-        <td>{{ person.department?.name }}</td>
-        <td>
-          <button (click)="editPerson(person.id)" class="btn btn-warning">Edit</button>
-          <button (click)="deletePerson(person.id)" class="btn btn-danger ml-2">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="person-container">
+  <!-- Person List -->
+  <div class="person-list">
+    <h2>Person List</h2>
+    <button (click)="addPerson()" class="btn btn-primary mb-2">Add New Person</button>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of people">
+          <td>{{ person.firstName }}</td>
+          <td>{{ person.lastName }}</td>
+          <td>{{ person.email }}</td>
+          <td>{{ person.department?.name }}</td>
+          <td>
+            <button (click)="selectPerson(person)" class="btn btn-warning btn-sm">Edit</button>
+            <button (click)="deletePerson(person.id)" class="btn btn-danger btn-sm ml-2">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Person Editor (Visible only when selected) -->
+  <div class="person-editor" *ngIf="selectedPerson">
+    <app-person-editor [person]="selectedPerson" (close)="closeEditor()"></app-person-editor>
+  </div>
 </div>
