@@ -2,12 +2,9 @@
 
 namespace UKParliament.CodeTest.Data;
 
-public class PersonManagerContext : DbContext
+public class PersonManagerContext(DbContextOptions<PersonManagerContext> options) : DbContext (options)
 {
-    public PersonManagerContext(DbContextOptions<PersonManagerContext> options) : base(options)
-    {
 
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,10 +22,10 @@ public class PersonManagerContext : DbContext
              .HasForeignKey(p => p.DepartmentId);
 
         modelBuilder.Entity<Person>()
-            .HasIndex(p => p.Email) // Ensure email is unique
+            .HasIndex(p => p.Email) //  email is unique
             .IsUnique();
     }
 
-    public DbSet<Person> People { get; set; }
-    public DbSet<Department> Departments { get; set; }
+    public required DbSet<Person> People { get; set; }
+    public required DbSet<Department> Departments { get; set; }
 }

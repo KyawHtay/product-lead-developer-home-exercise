@@ -11,7 +11,6 @@ export class PersonService {
   private baseUrl = environment.apiUrl+"/api/person";
   constructor(private http: HttpClient) { }
 
-  // Below is some sample code to help get you started calling the API
   getById(id: number): Observable<PersonViewModel> {
     console.log(this.baseUrl + `${id}`);
     return this.http.get<PersonViewModel>(this.baseUrl + `/${id}`)
