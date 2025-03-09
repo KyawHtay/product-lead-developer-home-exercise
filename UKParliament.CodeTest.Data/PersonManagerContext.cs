@@ -2,9 +2,11 @@
 
 namespace UKParliament.CodeTest.Data;
 
-public class PersonManagerContext(DbContextOptions<PersonManagerContext> options) : DbContext (options)
+public class PersonManagerContext : DbContext
 {
-
+    public PersonManagerContext(DbContextOptions<PersonManagerContext> options) : base(options)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +28,6 @@ public class PersonManagerContext(DbContextOptions<PersonManagerContext> options
             .IsUnique();
     }
 
-    public required DbSet<Person> People { get; set; }
-    public required DbSet<Department> Departments { get; set; }
+    public  DbSet<Person> People { get; set; }
+    public  DbSet<Department> Departments { get; set; }
 }
