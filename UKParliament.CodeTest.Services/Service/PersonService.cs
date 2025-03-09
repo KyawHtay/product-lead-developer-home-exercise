@@ -33,6 +33,10 @@ namespace UKParliament.CodeTest.Services
             await _repository.UpdateAsync(person);
         }
 
+        public async Task<Person> GetByEmailAsync(string email){
+            return await _repository.GetByEmailAsync(email);
+        }
+
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);

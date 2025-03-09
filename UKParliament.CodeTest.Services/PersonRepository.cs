@@ -25,6 +25,10 @@ public class PersonRepository : IPersonRepository
 
     public async Task AddAsync(Person person)
     {
+        if (await _context.People.AnyAsync(p => p.Email == person.Email))
+        {
+            throw new InvalidOperationException("A person with this email already exists.");
+        }
         await _context.People.AddAsync(person);
         await _context.SaveChangesAsync();
     }
@@ -43,5 +47,10 @@ public class PersonRepository : IPersonRepository
             _context.People.Remove(person);
             await _context.SaveChangesAsync();
         }
+    }
+
+    public async Task<Person> GetByEmailAsync(string email)
+    {
+        return await _context.People.FirstOrDefaultAsync(p => p.Email == email);
     }
 }
