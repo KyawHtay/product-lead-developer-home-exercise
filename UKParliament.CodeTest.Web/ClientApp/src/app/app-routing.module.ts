@@ -12,8 +12,8 @@ import { DepartmentEditorComponent } from './components/department-editor/depart
 const routes: Routes = [
   { path: '', component: HomeComponent }, // Default route
   { path: 'persons', component: PersonListComponent }, // List of persons
-  { path: 'edit/:id', component: PersonEditorComponent }, // Edit Person
-  { path: 'new', component: PersonEditorComponent }, // Add New Person
+  { path: 'persons/edit/:id', component: PersonEditorComponent }, // Edit Person
+  { path: 'persons/new', component: PersonEditorComponent }, // Add New Person
   { path: 'departments', component: DepartmentListComponent }, // List of Departments
   { path: 'departments/edit/:id', component: DepartmentEditorComponent }, // Edit Department
   { path: 'departments/new', component: DepartmentEditorComponent } // Add Department
