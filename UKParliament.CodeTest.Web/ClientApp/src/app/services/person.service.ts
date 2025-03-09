@@ -12,7 +12,7 @@ export class PersonService {
   constructor(private http: HttpClient) { }
 
   getById(id: number): Observable<PersonViewModel> {
-    console.log(this.baseUrl + `${id}`);
+    console.log(this.baseUrl + `/${id}`);
     return this.http.get<PersonViewModel>(this.baseUrl + `/${id}`)
   }
 

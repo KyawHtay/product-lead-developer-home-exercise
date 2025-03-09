@@ -1,41 +1,51 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
-
 import { PersonEditorComponent } from './person-editor.component';
 import { PersonService } from '../../services/person.service';
 import { DepartmentService } from '../../services/department.service';
-import { PersonViewModel } from '../../models/person-view-model';
-import { DepartmentVewModel } from '../../models/department-view-model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('PersonEditorComponent', () => {
   let component: PersonEditorComponent;
   let fixture: ComponentFixture<PersonEditorComponent>;
   let mockPersonService: jasmine.SpyObj<PersonService>;
   let mockDepartmentService: jasmine.SpyObj<DepartmentService>;
+  let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    // ✅ Create service spies
-    mockPersonService = jasmine.createSpyObj('PersonService', ['create', 'update']);
+    mockPersonService = jasmine.createSpyObj('PersonService', ['getById', 'create', 'update']);
     mockDepartmentService = jasmine.createSpyObj('DepartmentService', ['getDepartments']);
+    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+
+    // ✅ Ensure getDepartments() returns a valid observable
+    mockDepartmentService.getDepartments.and.returnValue(of([{ id: 1, name: 'HR' }]));
+
+    // ✅ Ensure getById() returns a valid observable to avoid `subscribe()` failure
+    mockPersonService.getById.and.returnValue(of({
+      id: 1,
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      dateOfBirth: '1990-01-01',
+      departmentId: 1,
+      department: { id: 1, name: 'HR' }
+    }));
 
     await TestBed.configureTestingModule({
       declarations: [PersonEditorComponent],
-      imports: [FormsModule, HttpClientTestingModule], 
+      imports: [FormsModule, HttpClientTestingModule],
       providers: [
         { provide: PersonService, useValue: mockPersonService },
-        { provide: DepartmentService, useValue: mockDepartmentService }
+        { provide: DepartmentService, useValue: mockDepartmentService },
+        { provide: Router, useValue: mockRouter },
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: { get: () => '1' } } } }
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PersonEditorComponent);
     component = fixture.componentInstance;
-
-    // ✅ Mock the departments list to prevent 'undefined' error
-    const mockDepartments: DepartmentVewModel[] = [{ id: 1, name: 'HR' }, { id: 2, name: 'Finance' }];
-    mockDepartmentService.getDepartments.and.returnValue(of(mockDepartments));
-
     fixture.detectChanges();
   });
 
@@ -44,47 +54,53 @@ describe('PersonEditorComponent', () => {
   });
 
   it('should load departments on init', () => {
+    component.ngOnInit();
+    fixture.detectChanges();
+
     expect(mockDepartmentService.getDepartments).toHaveBeenCalled();
-    expect(component.departments.length).toBe(2);
+    expect(component.departments.length).toBe(1);
+    expect(component.departments[0].name).toBe('HR');
+  });
+
+  it('should load person on init if ID is present', () => {
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(mockPersonService.getById).toHaveBeenCalledWith(1);
+    expect(component.person?.firstName).toBe('John');
   });
 
   it('should call update when person has an ID', () => {
-    const mockPerson: PersonViewModel = { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1, department: { id: 1, name: 'HR' } };
-    component.person = mockPerson;
+    component.person = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com', dateOfBirth: '1985-05-20', departmentId: 2, department: { id: 2, name: 'Finance' } };
+    mockPersonService.update.and.returnValue(of(void 0));
 
-    mockPersonService.update.and.returnValue(of(undefined));
+    component.savePerson({ valid: true } as any);
 
-    const fakeForm = { valid: true } as NgForm;
-    component.savePerson(fakeForm);
-
-    expect(mockPersonService.update).toHaveBeenCalledWith(mockPerson);
+    expect(mockPersonService.update).toHaveBeenCalledWith(component.person);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/persons']);
   });
 
   it('should call create when person has no ID', () => {
-    const mockPerson: PersonViewModel = { id: 0, firstName: 'Alice', lastName: 'Smith', email: 'alice@example.com', dateOfBirth: '1995-06-15', departmentId: 2, department: { id: 2, name: 'Finance' } };
-    component.person = mockPerson;
+    component.person = { id: 0, firstName: 'New', lastName: 'Person', email: 'new@example.com', dateOfBirth: '2000-01-01', departmentId: 3, department: { id: 3, name: 'IT' } };
+    const { id, ...personWithoutId } = component.person;
+    mockPersonService.create.and.returnValue(of({ id: 1, ...personWithoutId }));
 
-    mockPersonService.create.and.returnValue(of(mockPerson));
+    component.savePerson({ valid: true } as any);
 
-    const fakeForm = { valid: true } as NgForm;
-    component.savePerson(fakeForm);
-
-    expect(mockPersonService.create).toHaveBeenCalledWith(mockPerson);
+    expect(mockPersonService.create).toHaveBeenCalledWith(component.person);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/persons']);
   });
 
   it('should NOT call create/update when form is invalid', () => {
-    const fakeForm = { valid: false } as NgForm;
-    component.savePerson(fakeForm);
+    component.savePerson({ valid: false } as any);
 
     expect(mockPersonService.create).not.toHaveBeenCalled();
     expect(mockPersonService.update).not.toHaveBeenCalled();
   });
 
-  it('should emit close event on cancel', () => {
-    spyOn(component.close, 'emit');
-
+  it('should navigate to /persons when cancel is clicked', () => {
     component.cancel();
 
-    expect(component.close.emit).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/persons']);
   });
 });

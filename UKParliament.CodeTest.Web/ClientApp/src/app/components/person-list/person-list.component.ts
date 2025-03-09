@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PersonService } from '../../services/person.service';
 import { PersonViewModel } from '../../models/person-view-model';
 
@@ -12,14 +11,19 @@ export class PersonListComponent implements OnInit {
   people: PersonViewModel[] = [];
   selectedPerson: PersonViewModel | null = null;
 
-  constructor(private personService: PersonService, private router: Router) {}
+  constructor(
+    private personService: PersonService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadPeople();
   }
 
   loadPeople(): void {
-    this.personService.getAll().subscribe(data => this.people = data);
+    this.personService.getAll().subscribe(data => {
+      this.people = data;
+    });
   }
 
   addPerson(): void {
@@ -31,24 +35,27 @@ export class PersonListComponent implements OnInit {
       dateOfBirth: '',
       departmentId: 0,
       department: undefined
-    }; // Empty person object for adding
+    };
   }
 
   selectPerson(person: PersonViewModel): void {
-    this.selectedPerson = { ...person }; // Clone object for editing
+    this.personService.getById(person.id).subscribe(data => {
+      this.selectedPerson = data;
+      this.cdr.detectChanges(); 
+    });
   }
 
   deletePerson(id: number): void {
     if (confirm('Are you sure you want to delete this person?')) {
       this.personService.delete(id).subscribe(() => {
         this.people = this.people.filter(person => person.id !== id);
-        this.selectedPerson = null; // Close editor if person was selected
+        this.selectedPerson = null;
       });
     }
   }
 
   closeEditor(): void {
-    this.selectedPerson = null; // Hide editor
-    this.loadPeople(); // Reload updated list
+    this.selectedPerson = null;
+    this.loadPeople();
   }
 }

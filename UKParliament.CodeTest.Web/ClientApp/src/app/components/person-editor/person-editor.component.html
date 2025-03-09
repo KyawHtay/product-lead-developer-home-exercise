@@ -10,7 +10,7 @@
         type="text"
         id="firstName"
         class="form-control"
-        [(ngModel)]="person.firstName"
+        [(ngModel)]="person!.firstName"
         name="firstName"
         required
         #firstName="ngModel"
@@ -27,7 +27,7 @@
         type="text"
         id="lastName"
         class="form-control"
-        [(ngModel)]="person.lastName"
+        [(ngModel)]="person!.lastName"
         name="lastName"
         required
         #lastName="ngModel"
@@ -44,7 +44,7 @@
         type="email"
         id="email"
         class="form-control"
-        [(ngModel)]="person.email"
+        [(ngModel)]="person!.email"
         name="email"
         required
         email
@@ -63,7 +63,7 @@
         type="date"
         id="dateOfBirth"
         class="form-control"
-        [(ngModel)]="person.dateOfBirth"
+        [(ngModel)]="person!.dateOfBirth"
         name="dateOfBirth"
         required
         #dateOfBirth="ngModel"
@@ -86,7 +86,7 @@
       <select
         id="department"
         class="form-control"
-        [(ngModel)]="person.departmentId"
+        [(ngModel)]="person!.departmentId"
         name="departmentId"
         required
         #department="ngModel"
@@ -106,7 +106,7 @@
       <button
         type="submit"
         class="btn btn-success"
-        [disabled]="personForm.invalid || !person.departmentId"
+        [disabled]="personForm.invalid || !person?.departmentId"
       >
         Save
       </button>

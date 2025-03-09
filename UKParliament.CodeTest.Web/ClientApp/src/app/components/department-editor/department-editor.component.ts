@@ -20,11 +20,12 @@ export class DepartmentEditorComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+   
     if (id) {
       this.departmentService.getById(id)?.subscribe(dept => {
         this.department = dept ?? { id: 0, name: '' };
       }, () => {
-        this.department = { id: 0, name: '' }; // Handle null or undefined department response
+        this.department = { id: 0, name: '' };
       });
     }
   }
