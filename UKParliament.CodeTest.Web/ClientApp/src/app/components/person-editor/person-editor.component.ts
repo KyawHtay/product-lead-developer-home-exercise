@@ -5,6 +5,8 @@ import { PersonService } from '../../services/person.service';
 import { DepartmentService } from '../../services/department.service';
 import { DepartmentVewModel } from '../../models/department-view-model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-person-editor',
@@ -12,12 +14,12 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./person-editor.component.scss']
 })
 export class PersonEditorComponent implements OnInit {
-  @Input() person: PersonViewModel | null = null;
+  @Input() person!: PersonViewModel;
   @Output() close = new EventEmitter<void>();
 
   departments: DepartmentVewModel[] = [];
   today: string = new Date().toISOString().split('T')[0];
-  isNavigated: boolean = false; // Track if opened via route
+  isNavigated: boolean = false;
 
   constructor(
     private personService: PersonService,
@@ -29,34 +31,49 @@ export class PersonEditorComponent implements OnInit {
   ngOnInit(): void {
     this.loadDepartments();
 
-    // If no person is passed as @Input(), check for an ID in the route
-    if (!this.person) {
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-      if (id) {
-        this.isNavigated = true;
-        this.loadPerson(id);
-      } else {
-        this.person = {
-          id: 0,
-          firstName: '',
-          lastName: '',
-          dateOfBirth: '',
-          email: '',
-          departmentId: 0,
-          department: undefined
-        };
-      }
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id && !this.person) {
+      this.isNavigated = true;
+      this.loadPerson(id);
+    } else if (!this.person) {
+      this.initializePerson();
     }
   }
 
   loadPerson(id: number): void {
-    this.personService.getById(id).subscribe(person => {
-      this.person = person;
+    this.personService.getById(id).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          alert(`Person with ID ${id} not found. Redirecting to the person list.`);
+          this.router.navigate(['/persons']);
+        } else {
+          alert('An error occurred while fetching person details.');
+        }
+        return of(null);
+      })
+    ).subscribe(person => {
+      if (person) {
+        this.person = person;
+      } else {
+        this.initializePerson();
+      }
     });
   }
 
   loadDepartments(): void {
     this.departmentService.getDepartments().subscribe(depts => this.departments = depts);
+  }
+
+  initializePerson(): void {
+    this.person = {
+      id: 0,
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      email: '',
+      departmentId: 0,
+      department: undefined
+    };
   }
 
   savePerson(form: NgForm): void {
@@ -72,11 +89,12 @@ export class PersonEditorComponent implements OnInit {
   cancel(): void {
     this.handleClose();
   }
+
   private handleClose(): void {
     if (this.isNavigated) {
-      this.router.navigate(['/persons']); // ✅ If in route-based edit, navigate back
+      this.router.navigate(['/persons']);
     } else {
-      this.close.emit(); // ✅ Otherwise, close the editor inside the list
+      this.close.emit();
     }
   }
 }
