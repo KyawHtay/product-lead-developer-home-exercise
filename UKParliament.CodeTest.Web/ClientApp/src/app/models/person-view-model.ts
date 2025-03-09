@@ -1,4 +1,11 @@
+import { DepartmentVewModel } from "./department-view-model"
+
 export interface PersonViewModel {
-  firstName: string;
-  lastName: string;
+  id: number
+  firstName: string
+  lastName: string
+  dateOfBirth: string
+  email: string
+  departmentId: number
+  department?: DepartmentVewModel
 }

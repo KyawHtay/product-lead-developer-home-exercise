@@ -18,9 +18,17 @@ public class PersonManagerContext : DbContext
             new Department { Id = 2, Name = "Marketing" },
             new Department { Id = 3, Name = "Finance" },
             new Department { Id = 4, Name = "HR" });
+
+        modelBuilder.Entity<Person>()
+             .HasOne(p => p.Department)
+             .WithMany()
+             .HasForeignKey(p => p.DepartmentId);
+
+        modelBuilder.Entity<Person>()
+            .HasIndex(p => p.Email) // Ensure email is unique
+            .IsUnique();
     }
 
     public DbSet<Person> People { get; set; }
-
     public DbSet<Department> Departments { get; set; }
 }

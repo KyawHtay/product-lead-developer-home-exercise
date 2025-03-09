@@ -1,0 +1,64 @@
+<div class="container">
+  <h2 *ngIf="person.id">Edit Person</h2>
+  <h2 *ngIf="!person.id">Add New Person</h2>
+
+  <form #personForm="ngForm" (ngSubmit)="savePerson()" novalidate>
+
+    <!-- First Name -->
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" class="form-control" [(ngModel)]="person.firstName" name="firstName" required #firstName="ngModel">
+      <div *ngIf="firstName.invalid && firstName.touched" class="text-danger">
+        First Name is required.
+      </div>
+    </div>
+
+    <!-- Last Name -->
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" class="form-control" [(ngModel)]="person.lastName" name="lastName" required #lastName="ngModel">
+      <div *ngIf="lastName.invalid && lastName.touched" class="text-danger">
+        Last Name is required.
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="person.email" name="email" required email #email="ngModel">
+      <div *ngIf="email.invalid && email.touched" class="text-danger">
+        A valid Email is required.
+      </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" class="form-control" [(ngModel)]="person.dateOfBirth" name="dateOfBirth" required #dateOfBirth="ngModel">
+      <div *ngIf="dateOfBirth.invalid && dateOfBirth.touched" class="text-danger">
+        Date of Birth is required.
+      </div>
+    </div>
+
+    <!-- Department Dropdown (Validation Added) -->
+    <div class="form-group">
+      <label for="department">Department</label>
+      <select id="department" class="form-control" [(ngModel)]="person.departmentId" name="departmentId" required #departmentId="ngModel">
+        <option value="" disabled selected>Select a Department</option> <!-- Default disabled option -->
+        <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+      </select>
+      <!-- Show error if no department is selected -->
+      <div *ngIf="departmentId.invalid && departmentId.touched" class="text-danger">
+        Please select a Department.
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mt-3">
+      <button type="submit" class="btn btn-success"
+        [disabled]="personForm.invalid || !person.departmentId">Save</button>
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+    </div>
+
+  </form>
+</div>

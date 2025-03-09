@@ -1,0 +1,17 @@
+<div class="container">
+  <h2 *ngIf="department.id">Edit Department</h2>
+  <h2 *ngIf="!department.id">Add New Department</h2>
+
+  <form #departmentForm="ngForm" (ngSubmit)="saveDepartment()">
+    <div class="form-group">
+      <label for="name">Department Name</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="department.name" name="name" required>
+      <div *ngIf="departmentForm.controls['name']?.invalid && departmentForm.controls['name']?.touched" class="text-danger">
+        Department name is required.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="departmentForm.invalid">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+  </form>
+</div>

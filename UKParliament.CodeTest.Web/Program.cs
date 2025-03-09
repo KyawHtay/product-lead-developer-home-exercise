@@ -17,6 +17,10 @@ public class Program
         builder.Services.AddDbContext<PersonManagerContext>(op => op.UseInMemoryDatabase("PersonManager"));
 
         builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+
+        builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+        builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
         var app = builder.Build();
 
@@ -33,6 +37,11 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        app.UseCors(builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:4200"));
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
@@ -41,7 +50,11 @@ public class Program
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
 
-        app.MapFallbackToFile("index.html");
+        //app.MapFallbackToFile("index.html");
+        if (!app.Environment.IsDevelopment())
+        {
+            app.MapFallbackToFile("index.html");
+        }
 
         app.Run();
     }

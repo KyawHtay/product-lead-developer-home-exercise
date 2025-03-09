@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>Department List</h2>
+  <button (click)="addDepartment()" class="btn btn-primary">Add New Department</button>
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let department of departments">
+        <td>{{ department.name }}</td>
+        <td>
+          <button (click)="editDepartment(department.id)" class="btn btn-warning btn-sm">Edit</button>
+          <button (click)="deleteDepartment(department.id)" class="btn btn-danger btn-sm ml-2">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
