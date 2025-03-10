@@ -77,8 +77,8 @@ namespace UKParliament.CodeTest.Tests
             createdAtActionResult.Should().NotBeNull();
             createdAtActionResult!.StatusCode.Should().Be(201);
             createdAtActionResult.ActionName.Should().Be(nameof(DepartmentController.GetById));
-            createdAtActionResult.RouteValues["id"].Should().Be(department.Id);
-            createdAtActionResult.Value.Should().BeEquivalentTo(department);
+            createdAtActionResult?.RouteValues?["id"].Should().Be(department.Id);
+            createdAtActionResult?.Value.Should().BeEquivalentTo(department);
         }
 
         [Fact]

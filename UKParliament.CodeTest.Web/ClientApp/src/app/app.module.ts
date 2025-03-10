@@ -9,11 +9,15 @@ import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { PersonEditorComponent } from './components/person-editor/person-editor.component';
-import { NavbarComponent } from "./components/navbar/navbar.component";
 import { importProvidersFrom } from '@angular/core';
 import { PersonListComponent } from './components/person-list/person-list.component';
 import { DepartmentEditorComponent } from './components/department-editor/department-editor.component';
 import { DepartmentListComponent } from './components/department-list/department-list.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -23,19 +27,22 @@ import { DepartmentListComponent } from './components/department-list/department
         PersonListComponent,
         PersonEditorComponent,
         DepartmentListComponent,
-        DepartmentEditorComponent,
-        NavbarComponent
+        DepartmentEditorComponent
     ],
     bootstrap: [AppComponent],
     imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     FormsModule,
     AppRoutingModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule
 
 ],
     providers: [
         provideHttpClient(withInterceptorsFromDi()),
-        importProvidersFrom(NavbarComponent)
     ]
 })
 export class AppModule { }

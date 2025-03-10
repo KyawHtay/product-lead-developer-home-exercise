@@ -18,7 +18,7 @@ namespace UKParliament.CodeTest.Services
             return await _departmentRepository.GetAllAsync();
         }
 
-        public async Task<Department?> GetByIdAsync(int id)
+        public async Task<Department> GetByIdAsync(int id)
         {
             return await _departmentRepository.GetByIdAsync(id);
         }
