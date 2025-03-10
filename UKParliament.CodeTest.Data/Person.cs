@@ -8,5 +8,5 @@ public class Person
     public DateOnly DateOfBirth { get; set; }
     public required string Email { get; set; }
     public int DepartmentId { get; set; }
-    public  Department? Department { get; set; }
+    public  Department Department { get; set; }
 }

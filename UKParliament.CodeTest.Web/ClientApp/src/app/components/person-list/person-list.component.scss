@@ -1,109 +1,127 @@
-@import "node_modules/bootstrap/scss/bootstrap"; // Import Bootstrap for responsiveness
+@import "node_modules/bootstrap/scss/bootstrap";
 
-.person-list-container {
-  max-width: 900px;
-  margin: auto;
-  background: #d8bfbf;
+.person-container {
+  max-width: 100%;
+  padding: 20px;
+}
+
+/* Person List */
+.person-list {
+  max-width: 100%;
+  background: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-
-  h2 {
-    color: #b5b3d4;
-    text-align: center;
-  }
-
-  .add-btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 15px;
-    justify-content: center; // Center the button
-  }
-
-  table {
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
-
-    th {
-      background-color: #343a40;
-      color: #fff;
-      text-align: left;
-    }
-
-    tbody tr {
-      transition: 0.3s ease-in-out;
-
-      &:hover {
-        background: rgba(0, 0, 0, 0.05);
-      }
-    }
-  }
+  box-shadow: 0px 4px 10px rgba(219, 198, 198, 0.1);
 
   .btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
 
-    &.delete-btn {
-      &:hover {
-        background: #dc3545;
-        color: white;
-      }
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      white-space: nowrap;
     }
+
+    th {
+      background-color: #dcdee0;
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .btn-sm {
+      font-size: 0.9rem;
+      padding: 6px 10px;
+    }
+  }
+
+  /* Hides part of the email in small screens */
+  .email-cell {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Spacing between action buttons in normal size */
+  .action-buttons {
+    display: flex;
+    gap: 10px; /* Adds space between buttons */
   }
 
   /* Responsive Styles */
   @media (max-width: 768px) {
-    padding: 15px;
-
-    .add-btn {
-      flex-direction: column; // Stack elements on small screens
-    }
-
-    table {
-      display: block;
-      overflow-x: auto;
-      white-space: nowrap; // Prevent table elements from wrapping
-    }
-
-    thead {
-      display: none; // Hide table headers on small screens
-    }
-
-    tbody {
-      display: block;
-      width: 100%;
-    }
-
-    tr {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 15px;
-      background: white;
-      border-radius: 8px;
+    .container {
       padding: 10px;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    td {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px 10px;
-      border-bottom: 1px solid #ddd;
+    h2 {
+      font-size: 1.5rem;
+    }
 
-      &:last-child {
-        border-bottom: none;
-      }
+    .table {
+      font-size: 0.9rem;
+      overflow-x: auto;
     }
 
     .btn {
-      justify-content: center;
       width: 100%;
-      margin-top: 5px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .btn-sm {
+      font-size: 0.8rem;
+      padding: 5px 8px;
+    }
+
+    /* Stack action buttons vertically in small screens */
+    .action-buttons {
+      flex-direction: column;
+      gap: 5px; /* Smaller gap for vertical stacking */
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    .table {
+      font-size: 0.85rem;
+    }
+
+    .btn-sm {
+      font-size: 0.75rem;
+      padding: 4px 6px;
+    }
+
+    .table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    /* Hide part of the email in very small screens */
+    .email-cell {
+      max-width: 100px;
+    }
+
+    /* Stack buttons in a column on very small screens */
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
     }
   }
 }

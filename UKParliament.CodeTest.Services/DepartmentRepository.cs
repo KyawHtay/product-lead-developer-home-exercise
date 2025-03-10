@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UKParliament.CodeTest.Data;
 
 namespace UKParliament.CodeTest.Services
@@ -19,7 +17,7 @@ namespace UKParliament.CodeTest.Services
             return await _context.Departments.ToListAsync();
         }
 
-        public async Task<Department?> GetByIdAsync(int id)
+        public async Task<Department> GetByIdAsync(int id)
         {
             return await _context.Departments.FindAsync(id);
         }

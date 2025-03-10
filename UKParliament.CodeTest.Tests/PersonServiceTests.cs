@@ -63,7 +63,7 @@ namespace UKParliament.CodeTest.Tests
         [Fact]
         public async Task GetByIdAsync_ShouldReturnNull_WhenPersonDoesNotExist()
         {
-            _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync((Person)null);
+            _mockRepo.Setup(r => r.GetByIdAsync(99)).ReturnsAsync(default(Person));
 
             var result = await _service.GetByIdAsync(99);
 
