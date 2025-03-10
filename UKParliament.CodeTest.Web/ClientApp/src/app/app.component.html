@@ -1,5 +1,15 @@
 <div class="container">
-  <app-navbar></app-navbar>
+  <mat-toolbar color="=primary" style=" background-color: #373151; color: white;">
+    <mat-toolbar-row style="height: 50px;">
+      <a mat-button routerLink="/" mat-button>Home</a>
+      <a mat-button routerLink="/persons"  mat-button>List of Person</a>
+      <a mat-button routerLink="/departments"  mat-button>Departments</a>
+    </mat-toolbar-row>
+
+  </mat-toolbar>
   <br>
-  <router-outlet></router-outlet>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+
 </div>
