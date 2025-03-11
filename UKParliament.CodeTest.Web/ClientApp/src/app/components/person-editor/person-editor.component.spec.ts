@@ -28,7 +28,7 @@ describe('PersonEditorComponent', () => {
       email: 'john@example.com',
       dateOfBirth: '1990-01-01',
       departmentId: 1,
-      department: { id: 1, name: 'HR' }
+      departmentName:'HR'
     }));
 
     await TestBed.configureTestingModule({
@@ -69,7 +69,8 @@ describe('PersonEditorComponent', () => {
   });
 
   it('should call update when person has an ID', () => {
-    component.person = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com', dateOfBirth: '1985-05-20', departmentId: 2, department: { id: 2, name: 'Finance' } };
+    component.person = { id: 1, firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com', dateOfBirth: '1985-05-20', departmentId: 2,
+      departmentName: 'Finance'};
     mockPersonService.update.and.returnValue(of(void 0));
 
     component.savePerson({ valid: true } as any);
@@ -79,7 +80,8 @@ describe('PersonEditorComponent', () => {
   });
 
   it('should call create when person has no ID', () => {
-    component.person = { id: 0, firstName: 'New', lastName: 'Person', email: 'new@example.com', dateOfBirth: '2000-01-01', departmentId: 3, department: { id: 3, name: 'IT' } };
+    component.person = { id: 0, firstName: 'New', lastName: 'Person', email: 'new@example.com', dateOfBirth: '2000-01-01', departmentId: 3,
+      departmentName: 'IT'};
     const { id, ...personWithoutId } = component.person;
     mockPersonService.create.and.returnValue(of({ id: 1, ...personWithoutId }));
 

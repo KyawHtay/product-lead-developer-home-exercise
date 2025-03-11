@@ -72,7 +72,7 @@ export class PersonEditorComponent implements OnInit {
       dateOfBirth: '',
       email: '',
       departmentId: 0,
-      department: undefined
+      departmentName: ""
     };
   }
 

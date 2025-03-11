@@ -24,7 +24,8 @@ describe('PersonService', () => {
 
   it('should retrieve all persons', () => {
     const mockPeople: PersonViewModel[] = [
-      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1, department: { id: 1, name: 'HR' } }
+      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1,
+         departmentName:  'HR'  }
     ];
 
     service.getAll().subscribe(people => {
@@ -38,7 +39,9 @@ describe('PersonService', () => {
   });
 
   it('should create a new person', () => {
-    const newPerson: PersonViewModel = { id: 0, firstName: 'Alice', lastName: 'Smith', email: 'alice@example.com', dateOfBirth: '1995-06-15', departmentId: 2, department: { id: 2, name: 'Finance' } };
+    const newPerson: PersonViewModel = { id: 0, firstName: 'Alice', lastName: 'Smith', email: 'alice@example.com', dateOfBirth: '1995-06-15',
+          departmentId: 2,
+          departmentName: 'Finance'};
 
     service.create(newPerson).subscribe(person => {
       expect(person.firstName).toBe('Alice');

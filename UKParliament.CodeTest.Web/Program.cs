@@ -22,6 +22,9 @@ public class Program
         builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
+        // Register AutoMapper
+        builder.Services.AddAutoMapper(typeof(Program));
+        
         var app = builder.Build();
 
         // Create database so the data seeds
@@ -34,7 +37,7 @@ public class Program
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
-            
+
             app.UseHsts();
         }
         app.UseCors(builder => builder

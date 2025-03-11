@@ -29,7 +29,8 @@ describe('PersonListComponent', () => {
 
   it('should load people on init', () => {
     const mockPeople = [
-      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1, department: { id: 1, name: 'HR' } }
+      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1,
+        departmentName: 'HR' }
     ];
     mockPersonService.getAll.and.returnValue(of(mockPeople));
 
@@ -42,7 +43,8 @@ describe('PersonListComponent', () => {
 
   it('should delete a person', () => {
     const mockPeople = [
-      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1, department: { id: 1, name: 'HR' } }
+      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@example.com', dateOfBirth: '1990-01-01', departmentId: 1,
+          departmentName: 'HR' }
     ];
     component.people = mockPeople;
     mockPersonService.delete.and.returnValue(of(void 0));
