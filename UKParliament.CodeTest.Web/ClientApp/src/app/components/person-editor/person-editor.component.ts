@@ -16,11 +16,25 @@ import { catchError, of } from 'rxjs';
 export class PersonEditorComponent implements OnInit {
   @Input() person!: PersonViewModel;
   @Output() close = new EventEmitter<void>();
+  invalidDate: boolean = false;
 
   departments: DepartmentVewModel[] = [];
   today: string = new Date().toISOString().split('T')[0];
   isNavigated: boolean = false;
 
+  validateDateOfBirth(): void {
+    if (this.person.dateOfBirth) {
+      const selectedDate = new Date(this.person.dateOfBirth);
+      const todayDate = new Date();
+      const selectedYear = selectedDate.getFullYear();
+
+      if (selectedDate > todayDate || selectedYear < 1900 || selectedYear > todayDate.getFullYear()) {
+        this.invalidDate = true;
+      } else {
+        this.invalidDate = false;
+      }
+    }
+  }
   constructor(
     private personService: PersonService,
     private departmentService: DepartmentService,
@@ -77,7 +91,7 @@ export class PersonEditorComponent implements OnInit {
   }
 
   savePerson(form: NgForm): void {
-    if (!form.valid || !this.person) return;
+    if (!form.valid || !this.person || this.invalidDate) return;
 
     if (this.person.id) {
       this.personService.update(this.person).subscribe(() => this.handleClose());
