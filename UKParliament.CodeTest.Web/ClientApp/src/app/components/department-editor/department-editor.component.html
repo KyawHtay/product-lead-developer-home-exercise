@@ -1,0 +1,47 @@
+<div class="container">
+  <img
+    src="../../../assets/logo.svg"
+    alt="UK Parliament logo"
+    sizes="(max-width: 500px) 100vw, 500px"
+  />
+  <br />
+  <br />
+  <h1 *ngIf="department.id">
+    <strong> Department List</strong>
+  </h1>
+  <h1 *ngIf="!department.id"><strong> Add New Department</strong></h1>
+
+  <form #departmentForm="ngForm" (ngSubmit)="saveDepartment()">
+    <div class="form-group">
+      <label for="name">Department Name</label>
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        [(ngModel)]="department.name"
+        name="name"
+        required
+      />
+      <div
+        *ngIf="
+          departmentForm.controls['name']?.invalid &&
+          departmentForm.controls['name']?.touched
+        "
+        class="text-danger"
+      >
+        Department name is required.
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-success"
+      [disabled]="departmentForm.invalid"
+    >
+      Save
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="cancel()">
+      Cancel
+    </button>
+  </form>
+</div>

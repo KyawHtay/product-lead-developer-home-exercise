@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "UKParliament.CodeTest.Web": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": ""
+      },
+      "applicationUrl": "https://localhost:7048;http://localhost:5048"
+    }
+  }
+}

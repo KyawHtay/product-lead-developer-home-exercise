@@ -1,0 +1,127 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+.person-container {
+  max-width: 100%;
+  padding: 20px;
+}
+
+/* Person List */
+.person-list {
+  max-width: 100%;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(219, 198, 198, 0.1);
+
+  .btn {
+    font-size: 1rem;
+    padding: 10px 16px;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background-color: #dcdee0;
+      color: white;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .btn-sm {
+      font-size: 0.9rem;
+      padding: 6px 10px;
+    }
+  }
+
+  /* Hides part of the email in small screens */
+  .email-cell {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Spacing between action buttons in normal size */
+  .action-buttons {
+    display: flex;
+    gap: 10px; /* Adds space between buttons */
+  }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .table {
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    .btn {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .btn-sm {
+      font-size: 0.8rem;
+      padding: 5px 8px;
+    }
+
+    /* Stack action buttons vertically in small screens */
+    .action-buttons {
+      flex-direction: column;
+      gap: 5px; /* Smaller gap for vertical stacking */
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    .table {
+      font-size: 0.85rem;
+    }
+
+    .btn-sm {
+      font-size: 0.75rem;
+      padding: 4px 6px;
+    }
+
+    .table {
+      display: block;
+      overflow-x: auto;
+    }
+
+    /* Hide part of the email in very small screens */
+    .email-cell {
+      max-width: 100px;
+    }
+
+    /* Stack buttons in a column on very small screens */
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+}

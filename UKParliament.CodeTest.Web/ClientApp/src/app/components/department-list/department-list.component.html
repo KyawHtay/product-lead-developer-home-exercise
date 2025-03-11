@@ -1,0 +1,45 @@
+<div class="container">
+  <img
+    src="../../../assets/logo.svg"
+    alt="UK Parliament logo"
+    sizes="(max-width: 500px) 100vw, 500px"
+  />
+  <br />
+  <br />
+  <h1>
+    <strong> Department List</strong>
+  </h1>
+
+  <button (click)="addDepartment()" class="btn btn-primary">
+    Add New Department
+  </button>
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let department of departments">
+        <td>{{ department.name }}</td>
+        <td>
+          <div class="action-buttons">
+            <button
+              (click)="editDepartment(department.id)"
+              class="btn btn-warning btn-sm"
+            >
+              Edit
+            </button>
+            <button
+              (click)="deleteDepartment(department.id)"
+              class="btn btn-danger btn-sm ml-2"
+            >
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
