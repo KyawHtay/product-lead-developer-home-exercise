@@ -34,14 +34,14 @@ export class PersonListComponent implements OnInit {
       email: '',
       dateOfBirth: '',
       departmentId: 0,
-      department: undefined
+      departmentName: ""
     };
   }
 
   selectPerson(person: PersonViewModel): void {
     this.personService.getById(person.id).subscribe(data => {
       this.selectedPerson = data;
-      this.cdr.detectChanges(); 
+      this.cdr.detectChanges();
     });
   }
 
