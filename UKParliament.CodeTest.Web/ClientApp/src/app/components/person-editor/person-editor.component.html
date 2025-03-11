@@ -64,10 +64,11 @@
         required
         #dateOfBirth="ngModel"
         [max]="today"
+        (change)="validateDateOfBirth()"
       />
       <div *ngIf="dateOfBirth.invalid && dateOfBirth.touched" class="text-danger">
         <div *ngIf="dateOfBirth.errors?.required">Date of Birth is required.</div>
-        <div *ngIf="dateOfBirth.errors?.max">Date cannot be in the future.</div>
+        <div *ngIf="invalidDate">Date cannot be in the future.</div>
       </div>
     </div>
 
@@ -92,7 +93,11 @@
     </div>
 
     <div class="mt-3">
-      <button type="submit" class="btn btn-success" [disabled]="personForm.invalid || !person.departmentId">
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="personForm.invalid || !person.departmentId || invalidDate"
+      >
         Save
       </button>
       <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>

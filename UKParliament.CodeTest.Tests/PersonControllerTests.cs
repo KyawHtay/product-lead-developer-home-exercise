@@ -108,8 +108,8 @@ namespace UKParliament.CodeTest.Tests
             createdAtActionResult.Should().NotBeNull();
             createdAtActionResult!.StatusCode.Should().Be(201);
             createdAtActionResult.ActionName.Should().Be(nameof(PersonController.GetById));
-            createdAtActionResult.RouteValues["id"].Should().Be(person.Id);
-            createdAtActionResult.Value.Should().BeEquivalentTo(model);
+            createdAtActionResult?.RouteValues?["id"].Should().Be(person.Id);
+            createdAtActionResult?.Value.Should().BeEquivalentTo(model);
         }
 
         [Fact]
